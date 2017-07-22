@@ -5,6 +5,7 @@ module Shell
   , shell
   , shellOut
   , module Shell.Command
+  , module Control.Monad.Logger
   ) where
 
 import           Protolude
