@@ -1,0 +1,27 @@
+name: shell-cmd
+version: 0.1.0.0
+cabal-version: >=1.10
+build-type: Simple
+license: BSD3
+license-file: LICENSE
+maintainer: ppbogdan@gmail.com
+homepage: https://github.com/pbogdan/shell-cmd
+category: System
+author: Piotr Bogdan
+
+library
+    exposed-modules:
+        Shell
+        Shell.Command
+    build-depends:
+        base >=4.9 && <4.10,
+        extra,
+        protolude,
+        monad-logger,
+        turtle,
+        text,
+        posix-escape
+    default-language: Haskell2010
+    default-extensions: OverloadedStrings, NoImplicitPrelude
+    hs-source-dirs: src
+
