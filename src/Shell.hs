@@ -3,7 +3,7 @@
 module Shell
   ( ShellCmdFailed
   , shell
-  , shellOut
+  , shell_
   , module Shell.Command
   , module Control.Monad.Logger
   ) where
@@ -18,12 +18,9 @@ data ShellCmdFailed =
   ShellCmdFailed ExitCode
   deriving (Eq, Show)
 
-shell :: (MonadIO m, MonadLogger m, MonadError ShellCmdFailed m) => Text -> m ()
-shell = void . shellOut
-
-shellOut ::
+shell ::
      (MonadIO m, MonadLogger m, MonadError ShellCmdFailed m) => Text -> m Text
-shellOut cmd = do
+shell cmd = do
   (ret, out) <- liftIO $ systemOutput . toS $ cmd
   case ret of
     ExitSuccess -> return . toS $ out
@@ -31,3 +28,6 @@ shellOut cmd = do
       logWarnN $
         "Command " <> toS cmd <> " has failed with exit code " <> show code
       throwError . ShellCmdFailed $ code
+
+shell_ :: (MonadIO m, MonadLogger m, MonadError ShellCmdFailed m) => Text -> m ()
+shell_= void . shell
