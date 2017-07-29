@@ -21,6 +21,7 @@ data ShellCmdFailed =
 shell ::
      (MonadIO m, MonadLogger m, MonadError ShellCmdFailed m) => Text -> m Text
 shell cmd = do
+  logDebugN $ "Running command " <> toS cmd
   (ret, out) <- liftIO $ systemOutput . toS $ cmd
   case ret of
     ExitSuccess -> return . toS $ out
