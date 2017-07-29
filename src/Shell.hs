@@ -14,8 +14,9 @@ import           Extra (systemOutput)
 import           Shell.Command
 
 shell ::
-     (MonadIO m, MonadLogger m, MonadError ExitCode m) => Text -> m Text
-shell cmd = do
+     (MonadIO m, MonadLogger m, MonadError ExitCode m) => Text -> Args -> m Text
+shell exe args = do
+  let cmd = command exe args
   logDebugN $ "Running command " <> toS cmd
   (ret, out) <- liftIO $ systemOutput . toS $ cmd
   case ret of
@@ -25,5 +26,6 @@ shell cmd = do
         "Command " <> toS cmd <> " has failed with exit code " <> show code
       throwError code
 
-shell_ :: (MonadIO m, MonadLogger m, MonadError ExitCode m) => Text -> m ()
-shell_= void . shell
+shell_ ::
+     (MonadIO m, MonadLogger m, MonadError ExitCode m) => Text -> Args -> m ()
+shell_ exe = void . shell exe
