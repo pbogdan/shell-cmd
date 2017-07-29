@@ -13,20 +13,13 @@ import           Protolude
 import           Control.Monad.Logger
 import           Extra (systemOutput)
 import           Shell.Command
-import qualified Turtle.Prelude as P
 
 data ShellCmdFailed =
   ShellCmdFailed ExitCode
   deriving (Eq, Show)
 
 shell :: (MonadIO m, MonadLogger m, MonadError ShellCmdFailed m) => Text -> m ()
-shell cmd = do
-  ret <- P.shell cmd mempty
-  case ret of
-    ExitSuccess -> return ()
-    code@(ExitFailure _) -> do
-      logWarnN $ "Command " <> cmd <> " has failed with exit code " <> show code
-      throwError . ShellCmdFailed $ code
+shell = void . shellOut
 
 shellOut ::
      (MonadIO m, MonadLogger m, MonadError ShellCmdFailed m) => Text -> m Text
