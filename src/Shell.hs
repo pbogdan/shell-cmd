@@ -1,8 +1,7 @@
 {-# LANGUAGE FlexibleContexts #-}
 
 module Shell
-  ( ShellCmdFailed
-  , shell
+  ( shell
   , shell_
   , module Shell.Command
   , module Control.Monad.Logger
@@ -14,12 +13,8 @@ import           Control.Monad.Logger
 import           Extra (systemOutput)
 import           Shell.Command
 
-data ShellCmdFailed =
-  ShellCmdFailed ExitCode
-  deriving (Eq, Show)
-
 shell ::
-     (MonadIO m, MonadLogger m, MonadError ShellCmdFailed m) => Text -> m Text
+     (MonadIO m, MonadLogger m, MonadError ExitCode m) => Text -> m Text
 shell cmd = do
   logDebugN $ "Running command " <> toS cmd
   (ret, out) <- liftIO $ systemOutput . toS $ cmd
@@ -28,7 +23,7 @@ shell cmd = do
     code@(ExitFailure _) -> do
       logWarnN $
         "Command " <> toS cmd <> " has failed with exit code " <> show code
-      throwError . ShellCmdFailed $ code
+      throwError code
 
-shell_ :: (MonadIO m, MonadLogger m, MonadError ShellCmdFailed m) => Text -> m ()
+shell_ :: (MonadIO m, MonadLogger m, MonadError ExitCode m) => Text -> m ()
 shell_= void . shell
