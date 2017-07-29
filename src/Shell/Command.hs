@@ -1,7 +1,8 @@
 {-# LANGUAGE FlexibleContexts #-}
 
 module Shell.Command
-  ( option
+  ( Args
+  , option
   , switch
   , arg
   , raw
@@ -15,7 +16,7 @@ import           System.Posix.Escape
 
 -- @TODO: think about providing short / log args / switches
 
-type Cmd = State [Text] ()
+type Args = State [Text] ()
 
 option :: MonadState [Text] m => Text -> Text -> m ()
 option name value =
@@ -30,7 +31,7 @@ arg name = modify (\s -> (toS . escape . toS $ name) : s)
 raw :: MonadState [Text] m => Text -> m ()
 raw name = modify (\s -> name : s)
 
-command :: Text -> Cmd -> Text
+command :: Text -> Args -> Text
 command name x =
   let s = runIdentity $ execStateT x [name]
   in Text.intercalate " " (reverse s)
