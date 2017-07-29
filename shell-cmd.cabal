@@ -18,7 +18,6 @@ library
         extra,
         protolude,
         monad-logger,
-        turtle,
         text,
         posix-escape
     default-language: Haskell2010
