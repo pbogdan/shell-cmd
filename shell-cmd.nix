@@ -1,12 +1,12 @@
 { mkDerivation, base, extra, monad-logger, posix-escape, protolude
-, stdenv, text, turtle
+, stdenv, text
 }:
 mkDerivation {
   pname = "shell-cmd";
-  version = "0.1.0.0";
+  version = "0.2.0.0";
   src = ./.;
   libraryHaskellDepends = [
-    base extra monad-logger posix-escape protolude text turtle
+    base extra monad-logger posix-escape protolude text
   ];
   homepage = "https://github.com/pbogdan/shell-cmd";
   license = stdenv.lib.licenses.bsd3;
