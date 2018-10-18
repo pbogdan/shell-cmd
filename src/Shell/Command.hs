@@ -9,7 +9,7 @@ module Shell.Command
   , command
   ) where
 
-import           Protolude
+import           Protolude hiding (option)
 
 import qualified Data.Text as Text
 import           System.Posix.Escape
