@@ -10,7 +10,7 @@ module Shell
 import           Protolude
 
 import           Control.Monad.Logger
-import           Extra (systemOutput)
+import           System.Process.Extra (systemOutput)
 import           Shell.Command
 
 shell ::
