@@ -1,8 +1,14 @@
 let
-  shell-cmd = (import ./default.nix {});
   sources = import ./nix/sources.nix;
-  pkgs = (import sources.unstable {});
-in pkgs.haskellPackages.shellFor {
+in
+{ pkgs ? import sources.unstable { }
+}:
+let
+  shell-cmd = import ./default.nix {
+    inherit pkgs;
+  };
+in
+pkgs.haskellPackages.shellFor {
   packages = _: [
     shell-cmd
   ];
